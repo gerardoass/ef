@@ -1,19 +1,52 @@
-import os
+#!/usr/bin/env python3
+# -*- coding: utf-8 -*-
+"""
+NetGuard LAN Console
+====================
+Panel de control de administracion, monitoreo y diagnostico de red local.
+
+Arranque:
+    python main.py
+
+Empaquetado:
+    pyinstaller netguard.spec
+"""
+from __future__ import annotations
+
+import ctypes
 import sys
 
-_BASE_DIR = getattr(sys, "_MEIPASS", os.path.abspath(os.path.dirname(__file__)))
-if _BASE_DIR not in sys.path:
-    sys.path.insert(0, _BASE_DIR)
 
-import tkinter as tk
+def _set_dpi_awareness() -> None:
+    """Evita que Windows escale la GUI y la vuelva borrosa."""
+    try:
+        ctypes.windll.shcore.SetProcessDpiAwareness(1)
+    except Exception:
+        try:
+            ctypes.windll.user32.SetProcessDPIAware()
+        except Exception:
+            pass
 
-from ui.app import App
 
+def main() -> None:
+    _set_dpi_awareness()
 
-def main():
-    root = tk.Tk()
-    app = App(root)
-    root.mainloop()
+    from core import admin
+
+    # Verifica privilegios; si puede, relanza elevado y termina.
+    is_admin = admin.ensure_admin(auto_elevate=True)
+
+    from ui.app import run
+
+    try:
+        run()
+    except KeyboardInterrupt:
+        sys.exit(0)
+    except Exception as exc:
+        # En modo --windowed no hay stdout: mostramos el error en un dialogo
+        ctypes.windll.user32.MessageBoxW(
+            None, f"Error fatal:\n\n{exc}", "NetGuard", 0x10)
+        raise
 
 
 if __name__ == "__main__":
