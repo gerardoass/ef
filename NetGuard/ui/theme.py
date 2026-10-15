@@ -186,9 +186,9 @@ def glyph_icon(kind: str, size: int = 20, color: str = TEXT_MID) -> ctk.CTkImage
         d.ellipse([_P(.46, .46, S), _P(.54, .54, S)], fill=color)
         d.line([_P(.50, .50, S), _P(.86, .22, S)], fill=color, width=w)
     elif kind == "bolt":
-        d.polygon([(_P(.58, .06, S), _P(.24, .54, S)), (_P(.46, .54, S), _P(.40, .94, S)),
-                   (_P(.76, .44, S), (_P(.54, .44, S)), (_P(.60, .06, S))],
-                  fill=color)
+        d.polygon([_P(.58, .06, S), _P(.24, .54, S), _P(.46, .54, S),
+                   _P(.40, .94, S), _P(.76, .44, S), _P(.54, .44, S),
+                   _P(.60, .06, S)], fill=color)
     elif kind == "shield":
         d.polygon([(_P(.50, .06, S), _P(.90, .24, S)), (_P(.90, .56, S)),
                    (_P(.50, .94, S)), (_P(.10, .56, S)), (_P(.10, .24, S))],

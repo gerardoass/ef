@@ -17,6 +17,6 @@ for _p in (_ROOT, _HERE):
         sys.path.insert(0, _p)
 
 # ----------------------------------------------------------------------
-# Tema: import absoluto directo
+# Referencia absoluta explicita al tema.
 # ----------------------------------------------------------------------
 import ui.theme as theme
