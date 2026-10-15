@@ -1,5 +1,6 @@
 from __future__ import annotations
 
+import os
 import queue
 import sys
 import time
@@ -7,13 +8,15 @@ import tkinter as tk
 from pathlib import Path
 
 # ----------------------------------------------------------------------
-# Ancla de sys.path (misma logica que en app.py)
+# Rutas: raiz del proyecto y carpeta ui al frente de sys.path.
 # ----------------------------------------------------------------------
-_ROOT = Path(__file__).resolve().parent.parent
-if str(_ROOT) not in sys.path:
-    sys.path.insert(0, str(_ROOT))
+_HERE = os.path.abspath(os.path.dirname(__file__))
+_ROOT = os.path.abspath(os.path.join(_HERE, os.pardir))
+for _p in (_ROOT, _HERE):
+    if _p not in sys.path:
+        sys.path.insert(0, _p)
 
 # ----------------------------------------------------------------------
-# Tema: import absoluto explicito, sin try/except
+# Tema: import absoluto directo
 # ----------------------------------------------------------------------
 import ui.theme as theme

@@ -11,24 +11,23 @@ from tkinter import filedialog, messagebox, ttk
 import customtkinter as ctk
 
 # ----------------------------------------------------------------------
-# Ancla de sys.path (respaldo: main.py ya lo hace).
-# En el bundle __file__ es _MEIPASS/ui/app.py -> parent.parent = raiz.
+# Rutas: raiz del proyecto y carpeta ui al frente de sys.path.
 # ----------------------------------------------------------------------
-_ROOT = Path(__file__).resolve().parent.parent
-if str(_ROOT) not in sys.path:
-    sys.path.insert(0, str(_ROOT))
+_HERE = os.path.abspath(os.path.dirname(__file__))        # <raiz>\ui
+_ROOT = os.path.abspath(os.path.join(_HERE, os.pardir))   # <raiz>
+for _p in (_ROOT, _HERE):
+    if _p not in sys.path:
+        sys.path.insert(0, _p)
 
 # ----------------------------------------------------------------------
-# Imports internos: ABSOLUTOS EXPLICITOS.
-# `import paquete.modulo` es la unica forma que el analizador de
-# PyInstaller indexa sin ambiguedad. Nada de try/except.
+# Imports absolutos explicitos. Cero try/except, cero from . import
 # ----------------------------------------------------------------------
 import ui.theme as theme
+import ui.console as console
+
 from ui.theme import (BG_BASE, BG_CARD, BG_DEEP, BG_ELEV, BG_PANEL, LedDot,
                       NeonButton, NeonFrame, ScanBar, StatCard, bind_tree,
                       device_icon, glyph_icon)
-
-from ui.console import Console
 
 import core.admin as admin
 import core.arp as arp
@@ -42,3 +41,6 @@ from core.scanner import Device, State
 
 APP = "NETGUARD"
 VER = "2.0"
+
+# Renombrado obligatorio en el cuerpo del archivo:
+#   Console(...)  ->  console.Console(...)
